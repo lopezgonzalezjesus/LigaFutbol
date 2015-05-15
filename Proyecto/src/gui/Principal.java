@@ -198,6 +198,9 @@ public class Principal {
 		}
 	}
 	
+	/**
+	 * Metodo para guardar
+	 */
 	private void guardar() {
 		if(Gestion.isModificado() && Gestion.getFichero()!=null){
 			try {
