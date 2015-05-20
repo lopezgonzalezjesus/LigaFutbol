@@ -2,8 +2,6 @@ package gui;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-
 import liga.Directivo;
 import liga.Equipo;
 import liga.Futbolista;
@@ -17,11 +15,13 @@ import java.text.DecimalFormat;
 
 import javax.swing.JLabel;
 
+/**
+ * Clase que nos muestra el resultado de la plantilla después de entrenar
+ * @author Jesús López González
+ *
+ */
 public class ResultadoEntrenamiento extends PadreIntegrante {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JButton btSiguiente;
 	private JButton btAnterior;
@@ -31,10 +31,11 @@ public class ResultadoEntrenamiento extends PadreIntegrante {
 	DecimalFormat formato = new DecimalFormat("0.00");
 	
 	/**
-	 * Create the dialog.
+	 * Constructor de ResultadoEntrenamiento
 	 */
 	public ResultadoEntrenamiento(final Equipo equipo) {
 		super();
+		cbPaises.setEnabled(false);
 		tfTecnica.setEditable(false);
 		tfDorsal.setLocation(198, 214);
 		lblDorsal.setLocation(24, 217);
@@ -113,7 +114,10 @@ public class ResultadoEntrenamiento extends PadreIntegrante {
 		okButton.setVisible(false);
 	}
 	
-	
+	/**
+	 * Método que rellena los campos del formulario con las características del integrante a mostar
+	 * @param integrante Integrante a mostar
+	 */
 	private void mostrarIntegrante(IntegranteEquipo integrante){
 		tfNombre.setText(integrante.getNombre());
 		tfApellidos.setText(integrante.getApellidos());
@@ -121,11 +125,12 @@ public class ResultadoEntrenamiento extends PadreIntegrante {
 		cbEquipos.addItem(integrante.getEquipo().getNombre());
 		cbEquipos.setSelectedItem(integrante.getEquipo().getNombre());
 		if(integrante instanceof Futbolista){
+			cbPaises.removeAllItems();
 			cbPaises.addItem(integrante.getNacionalidad());
 			cbPaises.setSelectedItem(integrante.getNacionalidad());
 			cbRol.setSelectedIndex(0);
-			cbTipo.addItem(((Futbolista) integrante).getDemarcacion());
-			cbTipo.setSelectedItem(((Futbolista) integrante).getDemarcacion());
+			cbTipo.addItem(((Futbolista) integrante).getCargo());
+			cbTipo.setSelectedItem(((Futbolista) integrante).getCargo());
 			lblDorsal.setVisible(true);
 			tfDorsal.setText(String.valueOf(((Futbolista) integrante).getDorsal()));
 			tfDorsal.setVisible(true);
@@ -136,11 +141,12 @@ public class ResultadoEntrenamiento extends PadreIntegrante {
 			lblTecnicaGanada.setVisible(true);
 		}
 		else if(integrante instanceof Tecnico){
+			cbPaises.removeAllItems();
 			cbPaises.addItem(integrante.getNacionalidad());
 			cbPaises.setSelectedItem(integrante.getNacionalidad());
 			cbRol.setSelectedIndex(1);
-			cbTipo.addItem(((Tecnico) integrante).getTitulacion());
-			cbTipo.setSelectedItem(((Tecnico) integrante).getTitulacion());
+			cbTipo.addItem(((Tecnico) integrante).getCargo());
+			cbTipo.setSelectedItem(((Tecnico) integrante).getCargo());
 			lblDorsal.setVisible(false);
 			tfDorsal.setVisible(false);
 			lblTecnica.setVisible(true);
@@ -150,6 +156,7 @@ public class ResultadoEntrenamiento extends PadreIntegrante {
 			lblTecnicaGanada.setVisible(true);
 		}
 		else if(integrante instanceof Directivo){
+			cbPaises.removeAllItems();
 			cbPaises.addItem(integrante.getNacionalidad());
 			cbPaises.setSelectedItem(integrante.getNacionalidad());
 			cbRol.setSelectedIndex(2);
@@ -182,6 +189,10 @@ public class ResultadoEntrenamiento extends PadreIntegrante {
 		lblImagen.setIcon(null);
 	}
 	
+	/**
+	 * Método que habilita o deshabilita los botones de < y > según el número de equipos
+	 * de la liga y la posición en la que nos encontremos
+	 */
 	private void caparBoton(){
 		if(i-1<0)
 			btAnterior.setEnabled(false);

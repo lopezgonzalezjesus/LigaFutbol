@@ -1,23 +1,24 @@
 package gui;
 
 import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import liga.Cargo;
-import liga.Demarcacion;
+import liga.Directivo;
 import liga.Equipo;
 import liga.Futbolista;
-import liga.Titulacion;
+import liga.Tecnico;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import excepciones.DorsalExisteException;
 import excepciones.DorsalNullException;
 import excepciones.EntrenadorYaExistenteException;
 import excepciones.EquipoNullException;
 import excepciones.FotoNullException;
+import excepciones.IntegranteYaExistenteException;
 import excepciones.NacionalidadNullException;
 import excepciones.NombreInvalidoException;
 import excepciones.NumeroMaximoJugadoresException;
@@ -30,16 +31,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
+/**
+ * Clase que nos permite añadir un nuevo integrante a un equipo
+ * @author Jesús López González
+ *
+ */
 public class NuevoIntegrante extends PadreIntegrante {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private Equipo equipo;
 	File imagen;
 
 	/**
-	 * Create the dialog.
+	 * Constructor de NuevoIntegrante
 	 */
 	public NuevoIntegrante() {
 		super();
@@ -50,38 +54,38 @@ public class NuevoIntegrante extends PadreIntegrante {
 			public void actionPerformed(ActionEvent e) {
 				equipo=seleccionarEquipo(cbEquipos.getSelectedItem().toString());
 				if(cbRol.getSelectedItem()=="Jugador"){
-					try {
-						equipo.anadirFutbolista(tfNombre.getText(), tfApellidos.getText(), (String)cbPaises.getSelectedItem(), equipo, (ImageIcon)(lblImagen.getIcon()), tfDorsal.getText(), (Demarcacion)cbTipo.getSelectedItem());
-						JOptionPane.showMessageDialog(contentPanel, "Futbolista añadido con éxito", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-						Gestion.setModificado(true);
-						limpiarCampos();
-					} catch (NombreInvalidoException | EquipoNullException | NumberFormatException | NacionalidadNullException | FotoNullException | DorsalNullException | NumeroMaximoJugadoresException | DorsalExisteException e1) {
-						// TODO Auto-generated catch block
-						JOptionPane.showMessageDialog(contentPanel, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-					}
-				}
-				else if(cbRol.getSelectedItem()=="Técnico"){
-					try {
-						equipo.anadirTecnico(tfNombre.getText(), tfApellidos.getText(), (String)cbPaises.getSelectedItem(), equipo, (ImageIcon)(lblImagen.getIcon()), (Titulacion)cbTipo.getSelectedItem());
-						JOptionPane.showMessageDialog(contentPanel, "Técnico añadido con éxito", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-						Gestion.setModificado(true);
-						limpiarCampos();
-					} catch (NombreInvalidoException | EquipoNullException | NacionalidadNullException | FotoNullException | EntrenadorYaExistenteException e1) {
-						// TODO Auto-generated catch block
-						JOptionPane.showMessageDialog(contentPanel, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-					}
-				}
-				else if(cbRol.getSelectedItem()=="Directivo"){
 						try {
-							equipo.anadirDirectivo(tfNombre.getText(), tfApellidos.getText(), (String)cbPaises.getSelectedItem(), equipo, (ImageIcon)(lblImagen.getIcon()), (Cargo)cbTipo.getSelectedItem());
-							JOptionPane.showMessageDialog(contentPanel, "Directivo añadido con éxito", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+							equipo.anadirFutbolista(tfNombre.getText(), tfApellidos.getText(), (String)cbPaises.getSelectedItem(), equipo, (ImageIcon)(lblImagen.getIcon()), tfDorsal.getText(), (Cargo)cbTipo.getSelectedItem());
+							JOptionPane.showMessageDialog(contentPanel, "Futbolista añadido con éxito", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 							Gestion.setModificado(true);
 							limpiarCampos();
-						} catch (NombreInvalidoException | EquipoNullException
-								| FotoNullException | NacionalidadNullException | PresidenteYaDefinidoException e1) {
+						} catch (NombreInvalidoException | EquipoNullException | NumberFormatException | NacionalidadNullException | FotoNullException | DorsalNullException | NumeroMaximoJugadoresException | DorsalExisteException | IntegranteYaExistenteException e1) {
+							// TODO Auto-generated catch block
 							JOptionPane.showMessageDialog(contentPanel, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 						}
-				}
+					}
+					else if(cbRol.getSelectedItem()=="Técnico"){
+						try {
+							equipo.anadirTecnico(tfNombre.getText(), tfApellidos.getText(), (String)cbPaises.getSelectedItem(), equipo, (ImageIcon)(lblImagen.getIcon()), (Cargo)cbTipo.getSelectedItem());
+							JOptionPane.showMessageDialog(contentPanel, "Técnico añadido con éxito", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+							Gestion.setModificado(true);
+							limpiarCampos();
+						} catch (NombreInvalidoException | EquipoNullException | NacionalidadNullException | FotoNullException | EntrenadorYaExistenteException | IntegranteYaExistenteException e1) {
+							// TODO Auto-generated catch block
+							JOptionPane.showMessageDialog(contentPanel, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+					else if(cbRol.getSelectedItem()=="Directivo"){
+							try {
+								equipo.anadirDirectivo(tfNombre.getText(), tfApellidos.getText(), (String)cbPaises.getSelectedItem(), equipo, (ImageIcon)(lblImagen.getIcon()), (Cargo)cbTipo.getSelectedItem());
+								JOptionPane.showMessageDialog(contentPanel, "Directivo añadido con éxito", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+								Gestion.setModificado(true);
+								limpiarCampos();
+							} catch (NombreInvalidoException | EquipoNullException
+									| FotoNullException | NacionalidadNullException | PresidenteYaDefinidoException | IntegranteYaExistenteException e1) {
+								JOptionPane.showMessageDialog(contentPanel, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+							}
+					}
 			}
 		});
 		lblTipo.setBounds(24, 142, 86, 14);
@@ -94,7 +98,17 @@ public class NuevoIntegrante extends PadreIntegrante {
 		btnAnadirFoto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser elegirImagen = new JFileChooser();
-				elegirImagen.setCurrentDirectory(new File("src\\imagenes\\jugadores\\"));
+				FileNameExtensionFilter filtro = new FileNameExtensionFilter("JPG y PNG","jpg","png");
+				elegirImagen.setFileFilter(filtro);
+				if(cbRol.getSelectedItem()=="Jugador"){
+					elegirImagen.setCurrentDirectory(new File("src\\imagenes\\jugadores\\"));
+				}
+				if(cbRol.getSelectedItem()=="Técnico"){
+					elegirImagen.setCurrentDirectory(new File("src\\imagenes\\entrenadores\\"));
+				}
+				if(cbRol.getSelectedItem()=="Directivo"){
+					elegirImagen.setCurrentDirectory(new File("src\\imagenes\\presidentes\\"));
+				}
 				if(JFileChooser.APPROVE_OPTION == elegirImagen.showOpenDialog(elegirImagen))
 					lblImagen.setIcon((Gestion.abrirImagen(elegirImagen.getSelectedFile())));
 			}
@@ -116,9 +130,17 @@ public class NuevoIntegrante extends PadreIntegrante {
 		extraerTipo();
 	}
 	
+	/**
+	 * Método que nos permite mostrar un JComboBox con los diferentes puestos de un integrante dependiendo
+	 * del tipo de integrante
+	 */
 	private void extraerTipo(){
 		if(cbRol.getSelectedIndex()==0){
-			cbTipo.setModel(new DefaultComboBoxModel(Demarcacion.values()));
+			cbTipo.removeAllItems();
+			for (Cargo cargo : Cargo.values()) {
+				if(cargo.getClase()==Futbolista.class)
+					cbTipo.addItem(cargo);
+			}
 			lblTipo.setText("Posición");
 			lblTipo.setVisible(true);
 			cbTipo.setVisible(true);
@@ -126,7 +148,11 @@ public class NuevoIntegrante extends PadreIntegrante {
 			tfDorsal.setVisible(true);
 		}
 		else if(cbRol.getSelectedIndex()==1){
-			cbTipo.setModel(new DefaultComboBoxModel(Titulacion.values()));
+			cbTipo.removeAllItems();
+			for (Cargo cargo : Cargo.values()) {
+				if(cargo.getClase()==Tecnico.class)
+					cbTipo.addItem(cargo);
+			}
 			lblTipo.setText("Titulación");
 			lblTipo.setVisible(true);
 			cbTipo.setVisible(true);
@@ -134,7 +160,11 @@ public class NuevoIntegrante extends PadreIntegrante {
 			tfDorsal.setVisible(false);
 		}
 		else if(cbRol.getSelectedIndex()==2){
-			cbTipo.setModel(new DefaultComboBoxModel(Cargo.values()));
+			cbTipo.removeAllItems();
+				for (Cargo cargo : Cargo.values()) {
+					if(cargo.getClase()==Directivo.class)
+						cbTipo.addItem(cargo);
+			}
 			lblTipo.setText("Cargo");
 			lblTipo.setVisible(true);
 			cbTipo.setVisible(true);
@@ -144,6 +174,11 @@ public class NuevoIntegrante extends PadreIntegrante {
 			
 	}
 	
+	/**
+	 * Método que añade a un jugador a un equipo seleccionado
+	 * @param nombre Nombre el equipo
+	 * @return Devuelve el equipo seleccionado o null si no existe
+	 */
 	private Equipo seleccionarEquipo(String nombre){
 		for (int i = 0; i < Gestion.liga.size(); i++) {
 			if(nombre==Gestion.liga.get(i).getNombre())
@@ -159,7 +194,6 @@ public class NuevoIntegrante extends PadreIntegrante {
 		tfNombre.setText("");
 		tfApellidos.setText("");;
 		cbEquipos.removeAll();
-//		tfNacionalidad.setText("");
 		cbRol.removeAll();
 		cbTipo.removeAll();
 		tfSueldo.setText("");

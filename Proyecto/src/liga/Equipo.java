@@ -13,13 +13,15 @@ import excepciones.DorsalNullException;
 import excepciones.EntrenadorYaExistenteException;
 import excepciones.EquipoNullException;
 import excepciones.FotoNullException;
+import excepciones.IntegranteYaExistenteException;
 import excepciones.NacionalidadNullException;
 import excepciones.NombreInvalidoException;
 import excepciones.NumeroMaximoJugadoresException;
 import excepciones.PresidenteYaDefinidoException;
 
 /**
- * @author Jesús
+ * Clase Equipo desde la que podremos crear un equipo para nuestra Liga
+ * @author Jesús López González
  *
  */
 public class Equipo implements Serializable {
@@ -32,10 +34,14 @@ public class Equipo implements Serializable {
 	private String estadio;
 	private Calendar fundacion;
 	private ImageIcon escudo;
-	private ArrayList<IntegranteEquipo> plantilla = new ArrayList<IntegranteEquipo>();
+	public ArrayList<IntegranteEquipo> plantilla = new ArrayList<IntegranteEquipo>();
 
 	/**
 	 * Constructor de Equipo
+	 * @param nombre Nombre del Equipo
+	 * @param estadio Estadio del equipo
+	 * @param fundacion Fecha de fundacion del equipo
+	 * @param escudo Escudo del equipo
 	 */
 	public Equipo(String nombre, String estadio, Calendar fundacion,
 			ImageIcon escudo) {
@@ -45,6 +51,10 @@ public class Equipo implements Serializable {
 		setEscudo(escudo);
 	}
 
+	/**
+	 * Constructor de equipo por nombre
+	 * @param nombre nombre del equipo
+	 */
 	public Equipo(String nombre) {
 		setNombre(nombre);
 	}
@@ -52,23 +62,23 @@ public class Equipo implements Serializable {
 	/**
 	 * Método que añade un directivo a la plantilla de un equipo
 	 * 
-	 * @param nombre
-	 * @param apellidos
-	 * @param nacimiento
-	 * @param nacionalidad
-	 * @param equipo
-	 * @param cargo
-	 * @return
-	 * @throws NombreInvalidoException
-	 * @throws EquipoNullException
-	 * @throws FotoNullException
-	 * @throws NacionalidadNullException
-	 * @throws PresidenteYaDefinidoException 
+	 * @param nombre Nombre del directivo
+	 * @param apellidos Apellidos del directivo
+	 * @param nacionalidad Nacionalidad del directivo
+	 * @param equipo Equipo del directivo
+	 * @param cargo Cargo del directivo
+	 * @return Añade un directivo si se cumplen las condiciones necesarias
+	 * @throws NombreInvalidoException Si el nombre no es correcto
+	 * @throws EquipoNullException Si el equipo no es válido
+	 * @throws FotoNullException Si la foto está vacía
+	 * @throws NacionalidadNullException Si la nacionalidad está vacía
+	 * @throws PresidenteYaDefinidoException Si el equipo ya contiene un presidente
+	 * @throws IntegranteYaExistenteException  Si el integrante ya existe
 	 */
 	public boolean anadirDirectivo(String nombre, String apellidos,
 			String nacionalidad, Equipo equipo, ImageIcon foto, Cargo cargo)
 			throws NombreInvalidoException, EquipoNullException,
-			FotoNullException, NacionalidadNullException, PresidenteYaDefinidoException {
+			FotoNullException, NacionalidadNullException, PresidenteYaDefinidoException, IntegranteYaExistenteException {
 		if (!IntegranteEquipo.validarNombre(nombre))
 			throw new NombreInvalidoException(
 					"El nombre del directivo es inválido");
@@ -84,6 +94,8 @@ public class Equipo implements Serializable {
 			throw new FotoNullException("No has seleccionado una foto");
 		if(cargo == Cargo.PRESIDENTE && contarPresidente())
 			throw new PresidenteYaDefinidoException("Este equipo ya tiene un presidente");
+		if(plantilla.contains(new Directivo(nombre, apellidos)))
+			throw new IntegranteYaExistenteException("Este integrante ya existe");
 		return plantilla.add(new Directivo(nombre, apellidos, nacionalidad,
 				equipo, foto, cargo));
 	}
@@ -91,23 +103,23 @@ public class Equipo implements Serializable {
 	/**
 	 * Método que añade un tecnico a la plantilla de un equipo
 	 * 
-	 * @param nombre
-	 * @param apellidos
-	 * @param nacimiento
-	 * @param nacionalidad
-	 * @param equipo
-	 * @param titulacion
-	 * @return
-	 * @throws NombreInvalidoException
-	 * @throws EquipoNullException
-	 * @throws NacionalidadNullException
-	 * @throws FotoNullException
-	 * @throws EntrenadorYaExistenteException 
+	 * @param nombre Nombre del técnico
+	 * @param apellidos Apellidos del técnico
+	 * @param nacionalidad Nacionalidad del técnico
+	 * @param equipo Equipo del técnico
+	 * @param titulacion Titulación del técnico
+	 * @return Añade un técnico si se cumplen las condiciones
+	 * @throws NombreInvalidoException Si el nombre es inválido
+	 * @throws EquipoNullException Si el equipo está vacío
+	 * @throws NacionalidadNullException Si la nacionalidad está vacía
+	 * @throws FotoNullException Si la foto está vacía
+	 * @throws EntrenadorYaExistenteException Si ya existe un entrenador en el equipo
+	 * @throws IntegranteYaExistenteException Si el integrante ya existe
 	 */
 	public boolean anadirTecnico(String nombre, String apellidos,
 			String nacionalidad, Equipo equipo, ImageIcon foto,
-			Titulacion titulacion) throws NombreInvalidoException,
-			EquipoNullException, NacionalidadNullException, FotoNullException, EntrenadorYaExistenteException {
+			Cargo titulacion) throws NombreInvalidoException,
+			EquipoNullException, NacionalidadNullException, FotoNullException, EntrenadorYaExistenteException, IntegranteYaExistenteException {
 		if (!IntegranteEquipo.validarNombre(nombre))
 			throw new NombreInvalidoException(
 					"El nombre del técnico es inválido");
@@ -121,8 +133,10 @@ public class Equipo implements Serializable {
 					"No has seleccionado una nacionalidad");
 		if (foto == null)
 			throw new FotoNullException("No has seleccionado una foto");
-		if(titulacion==Titulacion.ENTRENADOR && contarEntrenador())
+		if(titulacion==Cargo.ENTRENADOR && contarEntrenador())
 			throw new EntrenadorYaExistenteException("Ya existe un entrenador para este equipo");
+		if(plantilla.contains(new Tecnico(nombre, apellidos)))
+			throw new IntegranteYaExistenteException("Este integrante ya existe");
 		else
 			return plantilla.add(new Tecnico(nombre, apellidos, nacionalidad,
 					equipo, foto, titulacion));
@@ -131,27 +145,27 @@ public class Equipo implements Serializable {
 	/**
 	 * Método que añade un futbolista a la plantilla de un equipo
 	 * 
-	 * @param nombre
-	 * @param apellidos
-	 * @param nacimiento
-	 * @param nacionalidad
-	 * @param equipo
-	 * @param dorsal
-	 * @param demarcacion
-	 * @return
-	 * @throws NombreInvalidoException
-	 * @throws EquipoNullException
-	 * @throws NacionalidadNullException
-	 * @throws FotoNullException
-	 * @throws DorsalNullException
-	 * @throws NumeroMaximoJugadoresException 
-	 * @throws DorsalExisteException 
+	 * @param nombre Nombre del futbolista
+	 * @param apellidos Apellidos del futbolista
+	 * @param nacionalidad Nacionalidad del futbolista
+	 * @param equipo Equipo del futbolista
+	 * @param dorsal Dorsal del futbolista
+	 * @param demarcacion Demarcación en el campos del futbolista
+	 * @return Añade un futbolista al equipo si se cumplen las condiciones
+	 * @throws NombreInvalidoException Si el nombre es inválido
+	 * @throws EquipoNullException Si el equipo está vacío
+	 * @throws NacionalidadNullException Si la nacionalidad está vacía
+	 * @throws FotoNullException Si la foto está vacía
+	 * @throws DorsalNullException Si el dorsal está vacío
+	 * @throws NumeroMaximoJugadoresException  Si se supera el número máximo de jugadores
+	 * @throws DorsalExisteException Si el dorsal ya existe
+	 * @throws IntegranteYaExistenteException Si el integrante ya existe
 	 */
 	public boolean anadirFutbolista(String nombre, String apellidos,
 			String nacionalidad, Equipo equipo, ImageIcon foto, String dorsal,
-			Demarcacion demarcacion) throws NombreInvalidoException,
+			Cargo demarcacion) throws NombreInvalidoException,
 			EquipoNullException, NacionalidadNullException, FotoNullException,
-			DorsalNullException, NumeroMaximoJugadoresException, DorsalExisteException {
+			DorsalNullException, NumeroMaximoJugadoresException, DorsalExisteException, IntegranteYaExistenteException {
 		if (!IntegranteEquipo.validarNombre(nombre))
 			throw new NombreInvalidoException(
 					"El nombre del futbolista es inválido");
@@ -165,18 +179,25 @@ public class Equipo implements Serializable {
 					"No has seleccionado una nacionalidad");
 		if (foto == null)
 			throw new FotoNullException("No has seleccionado una foto");
-		if (dorsal.equals(""))
-			throw new DorsalNullException("No has introducido un dorsal");
+		if (dorsal.equals("") || !Futbolista.validarDorsal(dorsal))
+			throw new DorsalNullException("El dorsal no es válido (1-99)");
 		if(!contarJugadores())
 			throw new NumeroMaximoJugadoresException("El cupo de futbolistas está completo.");
 		if(dorsalExiste(dorsal))
 			throw new DorsalExisteException("El dorsal ya existe");
+		if(plantilla.contains(new Futbolista(nombre, apellidos)))
+			throw new IntegranteYaExistenteException("Este integrante ya existe");
 		else {
 			return plantilla.add(new Futbolista(nombre, apellidos,
 					nacionalidad, equipo, foto, dorsal, demarcacion));
 		}
 	}
 
+	/**
+	 * Método que se utiliza para obtener un integrante del equipo
+	 * @param indice Indice del integrante a mostrar
+	 * @return Devuelve el integrante si existe o null en caso contrario
+	 */
 	public IntegranteEquipo get(int indice) {
 		if (plantilla.get(indice) != null && !(plantilla.isEmpty()))
 			return plantilla.get(indice);
@@ -186,36 +207,69 @@ public class Equipo implements Serializable {
 			return null;
 	}
 
+	/**
+	 * Método que elimina a un integrante de un equipo
+	 * @param integranteEquipo Integrante a eliminar
+	 * @return Elimina al integrant si existe o devuelve false en caso contrario
+	 */
 	public boolean eliminarIntegrante(IntegranteEquipo integranteEquipo) {
 		if (plantilla.contains(integranteEquipo))
 			return plantilla.remove(integranteEquipo);
 		return false;
 	}
 
+	/**
+	 * Muestra el tamaño de la plantilla del equipo
+	 * @return Tamaño de la plantilla
+	 */
 	public int size() {
 		return plantilla.size();
 	}
 
+	/**
+	 * Getter de nombre
+	 * @return nombre
+	 */
 	public String getNombre() {
 		return nombre;
 	}
 
+	/**
+	 * Setter de nombre
+	 * @param nombre
+	 */
 	private void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
+	/**
+	 * Getter de estadio
+	 * @return
+	 */
 	public String getEstadio() {
 		return estadio;
 	}
 
+	/**
+	 * Setter de estadio
+	 * @param estadio
+	 */
 	private void setEstadio(String estadio) {
 		this.estadio = estadio;
 	}
 
+	/**
+	 * Getter de fundacion
+	 * @return
+	 */
 	public Calendar getFundacion() {
 		return fundacion;
 	}
 
+	/**
+	 * Setter de fundacion
+	 * @param fundacion
+	 */
 	private void setFundacion(Calendar fundacion) {
 		this.fundacion = fundacion;
 	}
@@ -230,21 +284,52 @@ public class Equipo implements Serializable {
 		}
 	}
 
+	/**
+	 * Getter de escudo
+	 * @return
+	 */
 	public ImageIcon getEscudo() {
 		return escudo;
 	}
 
+	/**
+	 * Setter de escudo
+	 * @param escudo
+	 */
 	public void setEscudo(ImageIcon escudo) {
 		this.escudo = escudo;
 	}
 
+	/**
+	 * Método que comprueba si el nombre de un equipo es válido en base a un patrón
+	 * @param nombre Nombre del equipo
+	 * @return True en caso de ser válido y false en caso contrario
+	 */
 	public static boolean validarNombre(String nombre) {
 		matcher = PATRON_NOMBRE.matcher(nombre);
 		return matcher.matches();
 
 	}
+	
+	/**
+	 * Comprueba si existe un integrante en un equipo
+	 * @param integrante Integrante a comprobar
+	 * @return True en caso de que exista y False en caso contrario
+	 */
+	public boolean comprobarExiste(IntegranteEquipo integrante){
+		for (IntegranteEquipo integranteEquipo : plantilla) {
+			if(integranteEquipo.getNombre().equals(integrante.getNombre()) && integranteEquipo.getApellidos().equals(integrante.getApellidos()))
+				return true;
+		}
+		return false;
+	}
+
+	
 
 	@Override
+	/**
+	 * Metodo hashCode
+	 */
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -253,6 +338,9 @@ public class Equipo implements Serializable {
 	}
 
 	@Override
+	/**
+	 * Método equals que tiene en cuenta el nombre del equipo
+	 */
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -268,14 +356,11 @@ public class Equipo implements Serializable {
 			return false;
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return "Equipo [nombre=" + nombre + ", estadio=" + estadio
-				+ ", fundacion=" + fundacion + ", escudo=" + escudo
-				+ ", plantilla=" + plantilla + "]";
-	}
 	
+	/**
+	 * Método que cuenta el numero de jugadores para comprobar si se supera el limite
+	 * @return True en caso de que no se supere el limite y False en caso contrario
+	 */
 	private boolean contarJugadores(){
 		int contador=0;
 		for (int i = 0; i < plantilla.size(); i++) {
@@ -287,6 +372,10 @@ public class Equipo implements Serializable {
 		return false;
 	}
 	
+	/**
+	 * Método que compruebe si existe un presidente en un equipo
+	 * @return True si existe el presidente y False en caso contrario
+	 */
 	private boolean contarPresidente(){
 		for (int i = 0; i <plantilla.size(); i++) {
 			if(plantilla.get(i) instanceof Directivo)
@@ -296,15 +385,24 @@ public class Equipo implements Serializable {
 		return false;
 	}
 	
+	/**
+	 * Método que comprueba si existe un entrenador en un equipo
+	 * @return True si existe y False en caso contrario
+	 */
 	private boolean contarEntrenador(){
 		for (int i = 0; i <plantilla.size(); i++) {
 			if(plantilla.get(i) instanceof Tecnico)
-				if(((Tecnico) plantilla.get(i)).getTitulacion()==Titulacion.ENTRENADOR)
+				if(((Tecnico) plantilla.get(i)).getCargo()==Cargo.ENTRENADOR)
 					return true;
 		}
 		return false;
 	}
 	
+	/**
+	 * Método que comprueba si existe un dorsal en un equipo
+	 * @param dorsal Dorsal a comprobar
+	 * @return True si existe el dorsal y false en caso contrario
+	 */
 	private boolean dorsalExiste(String dorsal){
 		for (int i = 0; i < plantilla.size(); i++) {
 			if(plantilla.get(i) instanceof Futbolista)

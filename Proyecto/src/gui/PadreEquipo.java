@@ -11,8 +11,14 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.border.TitledBorder;
 
+/**
+ * Clase Padre para mostrar los datos de un equipo
+ * @author Jesús López González
+ *
+ */
 public class PadreEquipo extends JDialog {
 
+	private static final long serialVersionUID = 1L;
 	protected final JPanel contentPanel = new JPanel();
 	protected JTextField tfNombre;
 	protected JTextField tfEstadio;
@@ -29,7 +35,7 @@ public class PadreEquipo extends JDialog {
 
 
 	/**
-	 * Create the dialog.
+	 * Constuctor de PadreEquipo
 	 */
 	public PadreEquipo() {
 		setBounds(100, 100, 450, 300);

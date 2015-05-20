@@ -10,30 +10,29 @@ import java.awt.event.ActionEvent;
 import java.text.SimpleDateFormat;
 
 import liga.Equipo;
-import liga.Futbolista;
 import liga.Liga;
-import liga.Tecnico;
 
 import java.awt.Color;
 
+/**
+ * Clase que nos muestra los equipos de la Liga
+ * @author Jesús López González
+ *
+ */
 public class MostrarEquipos extends PadreEquipo {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	MostrarIntegrante mostrarIntegrantes;
 	ResultadoEntrenamiento resultadoEntrenamiento;
-	private Liga liga;
 	private JButton btAnterior;
 	private JButton btSiguiente;
 	private int i=0;
 
 
 	/**
-	 * Create the dialog.
+	 * Constructor de MostrarEquipos
 	 */
-	public MostrarEquipos(final Liga liga) {
+	public MostrarEquipos() {
 		super();
 		btAnadirEscudo.setSize(139, 23);
 		setModal(true);
@@ -43,12 +42,11 @@ public class MostrarEquipos extends PadreEquipo {
 		tfEstadio.setBounds(90, 61, 116, 20);
 		tfNombre.setBounds(90, 30, 116, 20);
 		lblImagen.setBounds(250, 11, 162, 138);
-		this.liga = liga;
-		mostrarEquipo(liga.get(0));
+		mostrarEquipo(Gestion.liga.get(0));
 		btAnadirEscudo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (liga.size()>0){
-					if (liga.get(i).size() == 0) {
+				if (Gestion.liga.size()>0){
+					if (Gestion.liga.get(i).size() == 0) {
 						JOptionPane.showMessageDialog(contentPanel,
 								"La plantilla no tiene integrantes aún",
 								"Aviso", JOptionPane.INFORMATION_MESSAGE);
@@ -77,8 +75,8 @@ public class MostrarEquipos extends PadreEquipo {
 		btAnterior = new JButton("<");
 		btAnterior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(liga.get(i-1)!=null)
-					mostrarEquipo(liga.get(--i));
+				if(Gestion.liga.get(i-1)!=null)
+					mostrarEquipo(Gestion.liga.get(--i));
 					caparBoton();
 			}
 		});
@@ -88,8 +86,8 @@ public class MostrarEquipos extends PadreEquipo {
 		btSiguiente = new JButton(">");
 		btSiguiente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(liga.get(i+1)!=null)
-					mostrarEquipo(liga.get(++i));
+				if(Gestion.liga.get(i+1)!=null)
+					mostrarEquipo(Gestion.liga.get(++i));
 					caparBoton();
 			}
 		});
@@ -99,7 +97,7 @@ public class MostrarEquipos extends PadreEquipo {
 		JButton btnEliminarEquipo = new JButton("Eliminar Equipo");
 		btnEliminarEquipo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(liga.size()==0){
+				if(Gestion.liga.size()==0){
 					JOptionPane.showMessageDialog(contentPanel, "No hay equipos en la liga", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 				}
 				else
@@ -111,25 +109,29 @@ public class MostrarEquipos extends PadreEquipo {
 		btnEliminarEquipo.setBounds(21, 194, 139, 23);
 		contentPanel.add(btnEliminarEquipo);
 		
-		JButton btnNewButton = new JButton("Entrenar");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btEntrenar = new JButton("Entrenar");
+		btEntrenar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(liga.size()==0){
-					JOptionPane.showMessageDialog(contentPanel, "No hay equipos en la liga", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+				if(Gestion.liga.size()==0 || Gestion.liga.get(i).size()==0){
+					JOptionPane.showMessageDialog(contentPanel, "No hay jugadores en la plantilla", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 				}
 				else{
 					Gestion.liga.get(i).entrenar();
-					resultadoEntrenamiento = new ResultadoEntrenamiento(liga.get(i));
+					resultadoEntrenamiento = new ResultadoEntrenamiento(Gestion.liga.get(i));
 					resultadoEntrenamiento.setVisible(true);
 				}
 			}
 		});
-		btnNewButton.setBounds(21, 146, 139, 23);
-		contentPanel.add(btnNewButton);
+		btEntrenar.setBounds(21, 146, 139, 23);
+		contentPanel.add(btEntrenar);
 		okButton.setVisible(false);
 		caparBoton();
 	}
 	
+	/**
+	 * Método que rellena los campos de texto de nuestra interfaz con los datos de un equipo
+	 * @param equipo Equipo a mostrar
+	 */
 	private void mostrarEquipo(Equipo equipo){
 		tfNombre.setText(equipo.getNombre());
 		tfEstadio.setText(equipo.getEstadio());
@@ -137,28 +139,35 @@ public class MostrarEquipos extends PadreEquipo {
 		lblImagen.setIcon(equipo.getEscudo());
 	}
 	
+	/**
+	 * Método que habilita o deshabilita los botones de < y > según el número de equipos
+	 * de la liga y la posición en la que nos encontremos
+	 */
 	private void caparBoton(){
 		if(i-1<0)
 			btAnterior.setEnabled(false);
 		else
 			btAnterior.setEnabled(true);
-		if(i+1>(liga.size()-1))
+		if(i+1>(Gestion.liga.size()-1))
 			btSiguiente.setEnabled(false);
 		else
 			btSiguiente.setEnabled(true);
 	}
 	
+	/**
+	 * Método que elimina un equipo de la liga preguntando previamente al usuario
+	 */
 	private void eliminarEquipo(){
 		try {
 			int opcion = JOptionPane.showOptionDialog(contentPanel, "¿Está seguro que desea eliminarlo? Se perderán sus componentes", "Eliminar Coche", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,null, null);
 			switch(opcion){
 			case JOptionPane.YES_OPTION:
-				if(liga.eliminarEquipo(tfNombre.getText())){
+				if(Gestion.liga.eliminarEquipo(tfNombre.getText())){
 					JOptionPane.showMessageDialog(contentPanel, "El Equipo se ha eliminado con éxito", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 					limpiarCampos();
 					i=0;
-					if(liga.size()>=1){
-						mostrarEquipo(liga.get(0));
+					if(Gestion.liga.size()>=1){
+						mostrarEquipo(Gestion.liga.get(0));
 						caparBoton();
 					}
 				}

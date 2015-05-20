@@ -2,8 +2,6 @@ package gui;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-
 import liga.Directivo;
 import liga.Equipo;
 import liga.Futbolista;
@@ -15,13 +13,13 @@ import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.text.DecimalFormat;
 
-import javax.swing.JLabel;
-
+/**
+ * Clase que muestra las características de un integrante
+ * @author Jesús López González
+ *
+ */
 public class MostrarIntegrante extends PadreIntegrante {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JButton btSiguiente;
 	private JButton btAnterior;
@@ -30,7 +28,7 @@ public class MostrarIntegrante extends PadreIntegrante {
 	DecimalFormat formato = new DecimalFormat("0.00");
 	
 	/**
-	 * Create the dialog.
+	 * Constructor de MostrarIntegrante
 	 */
 	public MostrarIntegrante(final Equipo equipo) {
 		super();
@@ -108,7 +106,10 @@ public class MostrarIntegrante extends PadreIntegrante {
 		okButton.setVisible(false);
 	}
 	
-	
+	/**
+	 * Método que nos rellena los campos del formulario con los datos de un integrante
+	 * @param integrante Integrante a mostrar
+	 */
 	private void mostrarIntegrante(IntegranteEquipo integrante){
 		tfNombre.setText(integrante.getNombre());
 		tfApellidos.setText(integrante.getApellidos());
@@ -119,8 +120,8 @@ public class MostrarIntegrante extends PadreIntegrante {
 			cbPaises.addItem(integrante.getNacionalidad());
 			cbPaises.setSelectedItem(integrante.getNacionalidad());
 			cbRol.setSelectedIndex(0);
-			cbTipo.addItem(((Futbolista) integrante).getDemarcacion());
-			cbTipo.setSelectedItem(((Futbolista) integrante).getDemarcacion());
+			cbTipo.addItem(((Futbolista) integrante).getCargo());
+			cbTipo.setSelectedItem(((Futbolista) integrante).getCargo());
 			lblDorsal.setVisible(true);
 			tfDorsal.setText(String.valueOf(((Futbolista) integrante).getDorsal()));
 			tfDorsal.setVisible(true);
@@ -132,8 +133,8 @@ public class MostrarIntegrante extends PadreIntegrante {
 			cbPaises.addItem(integrante.getNacionalidad());
 			cbPaises.setSelectedItem(integrante.getNacionalidad());
 			cbRol.setSelectedIndex(1);
-			cbTipo.addItem(((Tecnico) integrante).getTitulacion());
-			cbTipo.setSelectedItem(((Tecnico) integrante).getTitulacion());
+			cbTipo.addItem(((Tecnico) integrante).getCargo());
+			cbTipo.setSelectedItem(((Tecnico) integrante).getCargo());
 			lblDorsal.setVisible(false);
 			tfDorsal.setVisible(false);
 			lblTecnica.setVisible(true);
@@ -172,6 +173,10 @@ public class MostrarIntegrante extends PadreIntegrante {
 		lblImagen.setIcon(null);
 	}
 	
+	/**
+	 * Método que habilita o deshabilita los botones de < y > según el número de equipos
+	 * de la liga y la posición en la que nos encontremos
+	 */
 	private void caparBoton(){
 		if(i-1<0)
 			btAnterior.setEnabled(false);

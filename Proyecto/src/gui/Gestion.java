@@ -12,6 +12,11 @@ import javax.swing.ImageIcon;
 
 import liga.Liga;
 
+/**
+ * Clase que se encarga de la gestión del programa.
+ * @author Jesús López González
+ *
+ */
 public class Gestion {
 	
 	public static Liga liga = new Liga();
@@ -19,6 +24,14 @@ public class Gestion {
 	public static File fichero;
 	public static boolean abierto = false;
 
+	/**
+	 * Método que nos permite abrir un fichero
+	 * @param fichero Fichero a abrir
+	 * @return Devuelve un objeto de tipo Liga.
+	 * @throws FileNotFoundException Si el archivo no ha sido encontrado
+	 * @throws IOException Si existe un error en el flujo de datos
+	 * @throws ClassNotFoundException Si no se encuentra la clase
+	 */
 	static Liga abrir(File fichero) throws FileNotFoundException, IOException,
 			ClassNotFoundException {
 		try (ObjectInputStream entrada = new ObjectInputStream(
@@ -27,10 +40,21 @@ public class Gestion {
 		}
 	}
 
+	/**
+	 * Método que abre una imagen
+	 * @param fichero imagen a abrir
+	 * @return ImageIcon
+	 */
 	public static ImageIcon abrirImagen(File fichero) {
 		return new ImageIcon(fichero.toString());
 	}
 
+	/**
+	 * Método que nos permite escribir en un fichero
+	 * @param fichero Fichero a escribir
+	 * @throws FileNotFoundException Si el fichero no existe
+	 * @throws IOException Si se produce un error en el flujo de datos
+	 */
 	static void escribir(File fichero) throws FileNotFoundException,
 			IOException {
 		try (ObjectOutputStream salida = new ObjectOutputStream(
@@ -48,38 +72,75 @@ public class Gestion {
 		abierto = false;
 	}
 
+	/**
+	 * Comprueba si existe un fichero determinado
+	 * @param fichero Fichero a comprobar
+	 * @return True si existe y false en caso contrario
+	 */
 	static boolean existe(File fichero) {
 		return fichero.exists();
 	}
 
+	/**
+	 * Getter de Liga
+	 * @return Liga
+	 */
 	public static Liga getLiga() {
 		return liga;
 	}
 
+	/**
+	 * Setter de Liga
+	 * @param liga
+	 */
 	public static void setLiga(Liga liga) {
 		Gestion.liga = liga;
 	}
 
+	/**
+	 * Comprueba si la liga está modificada
+	 * @return True si está modificada y False en caso contrario
+	 */
 	public static boolean isModificado() {
 		return modificado;
 	}
 
+	/**
+	 * Setter de modificado
+	 * @param modificado 
+	 */
 	public static void setModificado(boolean modificado) {
 		Gestion.modificado = modificado;
 	}
 
+	/**
+	 * Getter de Fichero
+	 * @return Fichero
+	 */
 	public static File getFichero() {
 		return fichero;
 	}
 
+	/**
+	 * Setter de Fichero
+	 * @param fichero
+	 */
 	public static void setFichero(File fichero) {
 		Gestion.fichero = fichero;
 	}
 
+	/**
+	 * Comprueba si una liga ha sido abierta desde un fichero
+	 * @return True si ha sido abierta y False en caso contrario
+	 */
 	public static boolean isAbierto() {
 		return abierto;
 	}
 
+	/**
+	 * Setter de abierto
+	 * @param abierto
+	 */
 	public static void setAbierto(boolean abierto) {
 		Gestion.abierto = abierto;
 	}

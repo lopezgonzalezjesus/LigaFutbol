@@ -17,14 +17,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 
+/**
+ * Clase padre de la que heredarán aquellas clases que tengan que mostrar o añadir integrantes. Se usa
+ * para heredar la distribución de los botones y formularios.
+ * @author Jesús López González
+ *
+ */
 public class PadreIntegrante extends JDialog {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
-	/**
-	 * Create the dialog.
-	 */
 	protected final JPanel contentPanel = new JPanel();
 	protected JTextField tfNombre;
 	protected JTextField tfApellidos;
@@ -51,7 +52,7 @@ public class PadreIntegrante extends JDialog {
 	protected JComboBox cbPaises;
 
 	/**
-	 * Create the dialog.
+	 * Constructor de PadreIntegrante
 	 */
 	public PadreIntegrante() {
 		setBounds(100, 100, 450, 328);
