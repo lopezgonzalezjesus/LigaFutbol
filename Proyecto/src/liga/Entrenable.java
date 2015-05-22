@@ -6,6 +6,9 @@ package liga;
  *
  */
 public interface Entrenable {
+	
+	public static final float TECNICA_TECNICO = 0.5f;
+	public static final float TECNICA_JUGADOR = 1f;
 	/**
 	 * Metodo que entrena a un integrante de tipo Futbolista o Técnico
 	 */

@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
  * @author Jesús López González
  *
  */
-public class Tecnico extends IntegranteEquipo implements Entrenable, Serializable {
+public class Tecnico extends IntegranteEquipoEntrenable implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private float tecnica;
@@ -83,7 +83,7 @@ public class Tecnico extends IntegranteEquipo implements Entrenable, Serializabl
 	 */
 	public void entrenar(){
 		setTecnicaAnterior(getTecnica());
-		float tecnicaResultante = getTecnica()+(float)(Math.random()*0.5);
+		float tecnicaResultante = getTecnica()+(float)(Math.random()*Entrenable.TECNICA_TECNICO);
 		if(tecnicaResultante<=100){
 			setTecnica(tecnicaResultante);
 			setTecnicaGanada(getTecnica()-getTecnicaAnterior());

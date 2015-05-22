@@ -19,7 +19,7 @@ public abstract class IntegranteEquipo implements Retributable, Serializable{
 		/**
 		 * Patrón que permite introducir un nombre simple que comience por Mayúscula y contenga tilde o ñ
 		 */
-		private static final Pattern PATRON_NOMBRE = Pattern.compile("^[A-ZÁÉÍÚÓ]([a-záéíóúñç]){1,}");
+		private static final Pattern PATRON_NOMBRE = Pattern.compile("^([A-ZÁÉÍÓÚ][a-záéíóúç]*)+((\\s)[A-ZÁÉÍÓÚ][a-záéíóúç]*)*$");
 		private static Matcher matcher;
 		protected String nombre;
 		protected String apellidos;
@@ -217,12 +217,6 @@ public abstract class IntegranteEquipo implements Retributable, Serializable{
 			} else if (!nombre.equals(other.nombre))
 				return false;
 			return true;
-		}
-
-		public void entrenar() {
-		}
-		
-		public void generarTecnica(){
 		}
 		
 		public void generarSueldo(){

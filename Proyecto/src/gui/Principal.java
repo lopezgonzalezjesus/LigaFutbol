@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JMenuBar;
@@ -25,6 +26,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
+
+import javax.swing.JSeparator;
+
+import java.io.*;
 
 /**
  * Interfaz principal del programa, de la que partir&aacute;n las demas
@@ -165,6 +170,9 @@ public class Principal {
 				salir();
 			}
 		});
+		
+		JSeparator separator = new JSeparator();
+		mnArchivo.add(separator);
 		mnArchivo.add(mntmSalir);
 		
 		JMenu mnBuscar = new JMenu("Buscar");
@@ -340,7 +348,7 @@ public class Principal {
 		FileNameExtensionFilter filtro = new FileNameExtensionFilter("obj","obj");
 		guardar.setFileFilter(filtro);
 		if(guardar.showSaveDialog(guardar) == JFileChooser.APPROVE_OPTION){
-			Gestion.setFichero(guardar.getSelectedFile());
+			Gestion.setFichero(Gestion.extensionValida(guardar.getSelectedFile()));
 			try {
 				if(!Gestion.existe(Gestion.getFichero())){
 					Gestion.escribir(Gestion.getFichero());
@@ -405,4 +413,5 @@ public class Principal {
 		else
 			System.exit(0);
 	}
+
 }

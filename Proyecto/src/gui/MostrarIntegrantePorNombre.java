@@ -28,6 +28,7 @@ public class MostrarIntegrantePorNombre extends PadreIntegrante {
 	 */
 	public MostrarIntegrantePorNombre() {
 		super();
+		setTitle("Integrante por Nombre");
 		setModal(true);
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -44,7 +45,7 @@ public class MostrarIntegrantePorNombre extends PadreIntegrante {
 		});
 		cancelButton.setText("Volver");
 		okButton.setText("Buscar");
-		btnAnadirFoto.setEnabled(false);
+		btnAnadirFoto.setVisible(false);
 		tfDorsal.setEnabled(false);
 		tfTecnica.setEnabled(false);
 		tfSueldo.setEnabled(false);

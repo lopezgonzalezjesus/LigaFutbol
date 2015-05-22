@@ -47,7 +47,7 @@ public class MostrarIntegrantePorTipo extends PadreIntegrante {
 		});
 		cancelButton.setText("Volver");
 		cbTipo.setEnabled(false);
-		setTitle("Jugadores por Tipo");
+		setTitle("Integrante por Tipo");
 		cbRol.setEnabled(false);
 		cbEquipos.setEnabled(false);
 		lblImagen.setText("");

@@ -38,6 +38,9 @@ public class NuevoEquipo extends PadreEquipo {
 	 */
 	public NuevoEquipo(final Liga liga) {
 		super();
+		btAnadirEscudo.setText("A\u00F1adir escudo");
+		btAnadirEscudo.setBounds(21, 168, 137, 23);
+		setTitle("Nuevo Equipo");
 		setModal(true);
 		setResizable(false);
 		tfNombre.addFocusListener(new FocusAdapter() {
@@ -49,6 +52,17 @@ public class NuevoEquipo extends PadreEquipo {
 			@Override
 			public void focusGained(FocusEvent e) {
 					tfNombre.setForeground(java.awt.Color.BLACK);
+			}
+		});
+		tfEstadio.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				tfEstadio.setForeground(java.awt.Color.BLACK);
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(!Equipo.validarNombre(tfNombre.getText()))
+					tfEstadio.setForeground(java.awt.Color.RED);
 			}
 		});
 		cancelButton.addActionListener(new ActionListener() {

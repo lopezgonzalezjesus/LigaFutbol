@@ -1,5 +1,7 @@
 package gui;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -34,8 +36,7 @@ public class Gestion {
 	 */
 	static Liga abrir(File fichero) throws FileNotFoundException, IOException,
 			ClassNotFoundException {
-		try (ObjectInputStream entrada = new ObjectInputStream(
-				new FileInputStream(fichero))) {
+		try (ObjectInputStream entrada = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichero)))) {
 			return liga = (Liga) entrada.readObject();
 		}
 	}
@@ -58,7 +59,7 @@ public class Gestion {
 	static void escribir(File fichero) throws FileNotFoundException,
 			IOException {
 		try (ObjectOutputStream salida = new ObjectOutputStream(
-				new FileOutputStream(fichero))) {
+				new BufferedOutputStream(new FileOutputStream(extensionValida(fichero))))) {
 			salida.writeObject(liga);
 		}
 	}
@@ -145,6 +146,16 @@ public class Gestion {
 		Gestion.abierto = abierto;
 	}
 	
-	
+	/**
+	 * Método que hace que a la hora de guardar un archivo, este lo haga con extensión obj
+	 * @param archivo Archivo a comprobar
+	 * @return Archivo con extensión .obj
+	 */
+	public static File extensionValida(File archivo){
+		if(archivo.getPath().endsWith(".obj"))
+			return archivo;
+		else
+			return new File(archivo+".obj");
+	}
 
 }

@@ -28,7 +28,7 @@ public class Equipo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private static final Pattern PATRON_NOMBRE = Pattern
-			.compile("^[A-ZÁÉÍÚÓ]([a-záéíóúñç]){1,}$");
+			.compile("^([A-ZÁÉÍÓÚ][a-záéíóúç]*)+((\\s)[A-ZÁÉÍÓÚ][a-záéíóúç]*)*$");
 	private static Matcher matcher;
 	private String nombre;
 	private String estadio;
@@ -279,8 +279,10 @@ public class Equipo implements Serializable {
 	 */
 	public void entrenar() {
 		for (int i = 0; i < plantilla.size(); i++) {
-			if (!(plantilla.get(i) instanceof Directivo))
-				plantilla.get(i).entrenar();
+			if (plantilla.get(i) instanceof Futbolista)
+				((Futbolista) plantilla.get(i)).entrenar();
+			if (plantilla.get(i) instanceof Tecnico)
+				((Tecnico) plantilla.get(i)).entrenar();
 		}
 	}
 

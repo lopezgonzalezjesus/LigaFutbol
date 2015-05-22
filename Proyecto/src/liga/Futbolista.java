@@ -11,7 +11,7 @@ import javax.swing.ImageIcon;
  * @author Jesús López González
  *
  */
-public class Futbolista extends IntegranteEquipo implements Entrenable, Serializable {
+public class Futbolista extends IntegranteEquipoEntrenable implements Serializable {
 	
 	/**
 	 * Patrón para limitar el dorsal de un jugador de 1 a 99
@@ -105,7 +105,7 @@ public class Futbolista extends IntegranteEquipo implements Entrenable, Serializ
 	 * Método que genera la técnica de un futbolista aleatoriamente entre 1 y 100
 	 */
 	public void generarTecnica(){
-		setTecnica((float)(Math.random()*101+1));
+		setTecnica((float)(Math.random()*100+1));
 	}
 	
 	@Override
@@ -114,7 +114,7 @@ public class Futbolista extends IntegranteEquipo implements Entrenable, Serializ
 	 */
 	public void entrenar(){
 		setTecnicaAnterior(getTecnica());
-		float tecnicaResultante = getTecnica()+(float)(Math.random());
+		float tecnicaResultante = getTecnica()+(float)(Math.random()*Entrenable.TECNICA_JUGADOR);
 			if(tecnicaResultante<=100){
 				setTecnica(tecnicaResultante);
 				setTecnicaGanada(getTecnica()-getTecnicaAnterior());
