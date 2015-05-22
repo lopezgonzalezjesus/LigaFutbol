@@ -39,6 +39,7 @@ public class BuscarIntegranteTipo extends JDialog {
 	 * Constructor de clase
 	 */
 	public BuscarIntegranteTipo() {
+		setResizable(false);
 		setModal(true);
 		setTitle("Buscar Integrante por Tipo");
 		setBounds(100, 100, 450, 300);

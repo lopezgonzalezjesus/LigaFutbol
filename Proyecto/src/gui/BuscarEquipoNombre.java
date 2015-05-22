@@ -20,6 +20,7 @@ public class BuscarEquipoNombre extends PadreEquipo {
 	 */
 	public BuscarEquipoNombre() {
 		super();
+		setResizable(false);
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();

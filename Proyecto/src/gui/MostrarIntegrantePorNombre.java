@@ -28,6 +28,7 @@ public class MostrarIntegrantePorNombre extends PadreIntegrante {
 	 */
 	public MostrarIntegrantePorNombre() {
 		super();
+		setResizable(false);
 		setTitle("Integrante por Nombre");
 		setModal(true);
 		okButton.addActionListener(new ActionListener() {
